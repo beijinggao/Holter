@@ -23,6 +23,8 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 import org.apache.ftpserver.FtpServer;
+import org.apache.ftpserver.ftplet.UserManager;
+import org.apache.ftpserver.impl.DefaultFtpServer;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -55,11 +57,27 @@ public class FtpServerListener implements ServletContextListener {
 
         WebApplicationContext ctx = WebApplicationContextUtils.getWebApplicationContext(sce.getServletContext());
         
-        FtpServer server = (FtpServer) ctx.getBean("myServer");
+        DefaultFtpServer server = (DefaultFtpServer ) ctx.getBean("myServer");
         
         sce.getServletContext().setAttribute(FTPSERVER_CONTEXT_NAME, server);
         
+        UserManager userManage = server.getUserManager();
         try {
+        	// 删除原有的用户信息  
+            userManage.delete("admin");  
+              
+            // 构造新的用户并保存到数据库  
+            FtpServerUser base = new FtpServerUser();  
+            base.setName("admin");  
+            base.setPassword("admin");
+            base.setHomeDirectory("E:/");
+            base.setWritePermission(true);
+            userManage.save(base);
+            
+            
+            System.out.println("********************************************");
+            System.out.println(userManage.getAdminName());
+        	
             server.start();
             System.out.println("FtpServer started");
         } catch (Exception e) {

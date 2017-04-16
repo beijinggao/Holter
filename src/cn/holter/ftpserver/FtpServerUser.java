@@ -16,7 +16,9 @@ public class FtpServerUser implements User
       
     private String password;  
       
-    private String homeDirectory;  
+    private String homeDirectory;
+    
+    private boolean writePermission;
       
     public void setName(String name)  
     {  
@@ -78,6 +80,10 @@ public class FtpServerUser implements User
      */  
     public boolean getWritePermission()  
     {  
-        return true;  
-    }  
+        return writePermission;  
+    }
+
+	public void setWritePermission(boolean writePermission) {
+		this.writePermission = writePermission;
+	}
 }  

@@ -30,7 +30,17 @@
         <property name="prefix" value="/WEB-INF/jsp/" />  
         <!--可为空,方便实现自已的依据扩展名来选择视图解释类的逻辑 -->  
         <property name="suffix" value=".jsp" />  
-    </bean>  
+    </bean>
+    
+    <!-- 将多个配置文件读取到容器中，交给Spring管理 -->
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:jdbc.properties</value>
+			</list>
+		</property>
+	</bean>  
     
 
 	<mvc:interceptors>

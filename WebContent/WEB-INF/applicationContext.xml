@@ -36,6 +36,57 @@
 			</beans:bean>
 		</ftplet>
 	</ftplets>
-    <file-user-manager file="D:/javaworkspace/Holter/WebContent/WEB-INF/users.properties" />
+    <!--<file-user-manager file="D:/javaworkspace/Holter/WebContent/WEB-INF/users.properties" />-->
+    
+    <db-user-manager>  
+            <data-source>  
+                <beans:bean class="org.springframework.jdbc.datasource.DriverManagerDataSource">  
+                    <!--<beans:property name="driverClass" value="${jdbc.driverClassName}" />  
+                    <beans:property name="jdbcUrl" value="${jdbc.url}" />  
+                    <beans:property name="user" value="${jdbc.username}" />  
+                    <beans:property name="password" value="${jdbc.password}" /> --> 
+                    
+                    <beans:property name="driverClassName" value="com.mysql.jdbc.Driver" />              
+                    <beans:property name="url" value="jdbc:mysql://127.0.0.1:3306/test" />  
+                    <beans:property name="username" value="root" />  
+                    <beans:property name="password" value="" />            
+                     
+                </beans:bean>  
+            </data-source>  
+            <insert-user>  
+                INSERT INTO HolterUser   
+                    (userid, userpassword, homedirectory, enableflag, writepermission, idletime, uploadrate, downloadrate)   
+                VALUES   
+                    ('{userid}', '{userpassword}', '{homedirectory}', true, true, {idletime}, {uploadrate}, {downloadrate})  
+            </insert-user>  
+            <update-user>  
+                UPDATE HolterUser SET  
+                    userpassword='{userpassword}',  
+                    homedirectory='{homedirectory}',  
+                    enableflag={enableflag},  
+                    writepermission={writepermission},  
+                    idletime={idletime},  
+                    uploadrate={uploadrate},  
+                    downloadrate={downloadrate}  
+                WHERE   
+                    userid='{userid}'  
+            </update-user>  
+            <delete-user>DELETE FROM HolterUser WHERE userid = '{userid}'</delete-user>  
+            <select-user>  
+                SELECT   
+                    userid, userpassword, homedirectory,  
+                    enableflag, writepermission, idletime, uploadrate, downloadrate,  
+                    maxloginnumber, maxloginperip   
+                FROM   
+                    HolterUser   
+                WHERE   
+                    userid = '{userid}'  
+            </select-user>  
+            <select-all-users>SELECT userid FROM HolterUser ORDER BY userid</select-all-users>  
+            <is-admin>  
+                SELECT userid FROM HolterUser WHERE userid='{userid}' AND userid='admin'  
+            </is-admin>  
+            <authenticate>SELECT userpassword from HolterUser WHERE userid='{userid}'</authenticate>  
+        </db-user-manager>
     
 </server>
